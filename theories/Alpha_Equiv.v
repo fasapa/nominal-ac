@@ -94,13 +94,13 @@ Hint Resolve alpha_equiv_Ab_elim.
 Hint Resolve alpha_equiv_Ab_intro.
 Hint Resolve alpha_equiv_Su_elim.
 
-Require Import Omega.
+Require Import Lia.
 
 Lemma alpha_equiv_term_size : forall C s t,
       C |- s ~alpha t -> term_size s = term_size t.                               
 Proof.
-  intros. induction H; simpl; try omega.
-  rewrite perm_term_size in IHalpha_equiv. omega.
+  intros. induction H; simpl; try lia.
+  rewrite perm_term_size in IHalpha_equiv. lia.
 Qed.
 
 Lemma alpha_equiv_sub_context : forall C C' s t,
@@ -284,7 +284,7 @@ Proof.
  apply H; intros. intro. apply n. gen_eq g : (!p'); intro. 
  replace p' with (!g) in H1. rewrite perm_inv_atom in H1. 
  replace ((!p) $ a) with ((!p) $ (p $ (g $ a))). rewrite perm_inv_atom. trivial.
- rewrite H1. trivial. rewrite H2. rewrite rev_involutive. trivial.
+ rewrite H1. trivial. rewrite EQg. rewrite rev_involutive. trivial.
 Qed.
 
 (** Equivariance of alpha_equiv *)
@@ -345,8 +345,8 @@ Proof.
    unfold In_ds. intro. apply n.
    gen_eq g : (!pi'); intro. replace pi' with (!g) in H0.
    rewrite perm_inv_atom in H0. apply perm_eq_atom with (p := pi) in H0. 
-   apply perm_inv_side_atom in H0. rewrite H1 in H0. rewrite rev_involutive in H0.
-   trivial. rewrite H1. rewrite rev_involutive. trivial.
+   apply perm_inv_side_atom in H0. rewrite EQg in H0. rewrite rev_involutive in H0.
+   trivial. rewrite EQg. rewrite rev_involutive. trivial.
  apply fresh_Ab_elim in Q. 
  destruct Q. apply perm_inv_side_atom in H0. 
  rewrite rev_involutive in H0. contradiction.
@@ -384,10 +384,8 @@ Proof.
  apply alpha_equiv_Su_elim with (a := (!p) $ a) in H. apply fresh_Su; trivial.
  unfold In_ds in *|-*. rewrite <- 2 perm_comp_atom.
  gen_eq g : (!p); intro. replace p with (!g). rewrite perm_inv_atom; trivial.
- rewrite H1. rewrite rev_involutive. trivial.
+ rewrite EQg. rewrite rev_involutive. trivial.
 Qed.
-
-
 
 (** Reflexivity of alpha_equiv *)
 
@@ -428,21 +426,21 @@ Proof.
  inverts H1; inverts H2; auto. simpl in H0.
  (* Pr *)
  apply alpha_equiv_Pr. 
- apply H with (m:=term_size t0) (t2:=t1'); try omega; trivial.
- apply H with (m:=term_size t4) (t2:=t2'); try omega; trivial.
+ apply H with (m:=term_size t0) (t2:=t1'); try lia; trivial.
+ apply H with (m:=term_size t4) (t2:=t2'); try lia; trivial.
  (* Fc *)
  apply alpha_equiv_Fc. simpl in H0.
- apply H with (m:=term_size t) (t2:=t'); try omega; trivial.
+ apply H with (m:=term_size t) (t2:=t'); try lia; trivial.
  (* Ab *)
   (* a = b = c *)
   apply alpha_equiv_Ab_1. simpl in H0.
-  apply H with (m:=term_size t) (t2:=t'); try omega; trivial.
+  apply H with (m:=term_size t) (t2:=t'); try lia; trivial.
   (* a = b <> c *)
   apply alpha_equiv_Ab_2; trivial. simpl in H0.
-  apply H with (m:=term_size t) (t2:=t'); try omega; trivial.
+  apply H with (m:=term_size t) (t2:=t'); try lia; trivial.
   (* a <> b = c *)
   apply alpha_equiv_Ab_2; trivial. simpl in H0.
-  apply H with (m:=term_size t) (t2:=(|[(a, a')]|) @ t'); try omega; trivial.
+  apply H with (m:=term_size t) (t2:=(|[(a, a')]|) @ t'); try lia; trivial.
   apply alpha_equiv_equivariance; trivial.
   apply alpha_equiv_fresh with (a:=a) in H9; trivial.
   (* a <> b <> c *) 
@@ -450,7 +448,7 @@ Proof.
    (* a = c *)
    rewrite <- H1 in *|-*. clear H1 H7.
    apply alpha_equiv_Ab_1. 
-   apply H with (m:=term_size t) (t2:=(|[(a, a')]|) @ t'); try omega; trivial.  
+   apply H with (m:=term_size t) (t2:=(|[(a, a')]|) @ t'); try lia; trivial.  
    apply perm_inv_side. simpl.   
    apply ds_empty_equiv_2 with (pi := |[(a', a)]|); trivial.
    intro c. apply not_In_ds. apply swap_comm.
@@ -462,10 +460,10 @@ Proof.
     intro H2. apply H3. symmetry. trivial.
     intro H2. apply H1. symmetry. trivial.      
    apply alpha_equiv_Ab_2; trivial.
-   apply H with (m:=term_size t) (t2:=(|[(a, a')]|) @ t'); try omega; trivial.  
+   apply H with (m:=term_size t) (t2:=(|[(a, a')]|) @ t'); try lia; trivial.  
    apply perm_inv_side. simpl. rewrite perm_comp.
    apply H with (m:=term_size t') (t2:=(|[(a', a'0)]|) @ t'0); trivial.
-   apply alpha_equiv_term_size in H4. rewrite perm_term_size in H4. omega.
+   apply alpha_equiv_term_size in H4. rewrite perm_term_size in H4. lia.
    apply alpha_equiv_pi. intros b H2.
    unfold In_ds in H2. rewrite <- perm_comp_atom in H2.
    rewrite pi_comm_atom in H2.

@@ -75,14 +75,14 @@ Proof.
   destruct H0. inverts H0. 
   assert (Q : c1 |- (Fc E n t)|^s1 ~c ((Fc E n t')|^s1)).
    apply H3; trivial.
-  inverts Q; trivial. simpl in H10; omega. simpl in H10; omega. 
+  inverts Q; trivial. simpl in H10; lia. simpl in H10; lia. 
   false. false.
   apply H3; trivial.
   
   (* equ_sys_C1 *)
   generalize H6; intro H6'.
   apply H3 in H6'. simpl in H6'. inverts H6'.
-  destruct H8. simpl in H0. omega. destruct H0. false.
+  destruct H8. simpl in H0. lia. destruct H0. false.
   simpl in H5. destruct H5; apply H5; trivial. 
   exists (c0,s0,(p0|+(s2~?t0)|+(s3~?t1))\
           (Fc 2 n (<|s2,s3|>)~?Fc 2 n (<|t0,t1|>))); simpl.
@@ -111,7 +111,7 @@ Proof.
   (* equ_sys_C2 *)
   generalize H6; intro H6'.
   apply H3 in H6'. simpl in H6'. inverts H6'.
-  destruct H8. simpl in H0. omega. destruct H0. false.
+  destruct H8. simpl in H0. lia. destruct H0. false.
   simpl in H5. destruct H5; apply H5; trivial.   
   exists (c0,s0,(p0|+(s2~?t0)|+(s3~?t1))\
           (Fc 2 n (<|s2,s3|>)~?Fc 2 n (<|t0,t1|>))); simpl.

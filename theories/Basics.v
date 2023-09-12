@@ -14,14 +14,14 @@
  ============================================================================
 *)
 
-Require Export Bool Compare_dec List ListSet LibTactics.
+Require Export Bool Compare_dec List ListSet TLC.LibTactics.
 
 Notation "[]"    := nil  (at level 67). 
 Notation "|[ s ]|" := (s::nil) (at level 67).
 
 
 (** 
-    The Section trsp_Omega presents a set 
+    The Section trsp_lia presents a set 
     of lemmas about arithmetic over naturals
     that where closed with "Defined". 
     These lemmas will be used in termination 
@@ -33,7 +33,7 @@ Notation "|[ s ]|" := (s::nil) (at level 67).
 *)
        
 
-Section trsp_Omega.
+Section trsp_lia.
   
 Fixpoint eq_nat_rec (m n:nat) :=
 match m, n with 
@@ -191,7 +191,7 @@ Proof.
   apply -> le_Sn; trivial.   
 Defined.
    
-End trsp_Omega.
+End trsp_lia.
 
 
 
@@ -214,7 +214,7 @@ Defined.
     results to the libraries List and ListSet. *)
 
 
-Require Import Omega.
+Require Import Lia.
 
 Section ListFacts.
 
@@ -278,9 +278,9 @@ Proof.
    intros. gen a. induction l; intros.
    simpl in H; try contradiction.
    simpl in H. destruct H. exists 0.
-   simpl. split~. try omega; trivial.   
+   simpl. split~. try lia; trivial.   
    apply IHl in H. case H; clear H; intros n H.
-   destruct H. exists (S n). simpl. split~; try omega; trivial.
+   destruct H. exists (S n). simpl. split~; try lia; trivial.
 Qed.
 
 Lemma nth_0_exists_l' : forall (l : list A) d,
@@ -419,7 +419,7 @@ Lemma remove_In_length : forall (a : A) (l : list A),
 Proof.  
  intros. induction l; simpl; trivial.
  case (Aeq_dec a a0); intro H1.
- rewrite remove_eq; try omega.
+ rewrite remove_eq; try lia.
  apply NoDup_cons_iff. rewrite H1. trivial.
  simpl. simpl in H0. destruct H0.
  symmetry in H0. contradiction.
@@ -427,7 +427,7 @@ Proof.
   apply IHl; trivial. apply NoDup_cons_iff with (a:=a0); trivial.
   assert (Q' : length l > 0).
   destruct l. simpl in H1. contradiction.
-  simpl; try omega. omega.
+  simpl; try lia. lia.
 Qed.  
 
 Lemma remove_eq_set_remove : forall (l : list A) (a : A),
@@ -458,9 +458,7 @@ Qed.
 (** Comparing size of lists that do not have redundancies *)
 
 Lemma subset_list : forall (l l' : list A),
-      NoDup l  ->                     
-     (forall b, In b l -> In b l') ->             
-     length l <= length l' .
+  NoDup l -> (forall b, In b l -> In b l') -> length l <= length l' .
 Proof.
   intros. 
   gen_eq n0 : (length l).
@@ -468,45 +466,40 @@ Proof.
   gen l l' n0.
   induction n1 using peano_induction; intros.
 
-  destruct l'; destruct l; simpl in H2; simpl in H3;
-  rewrite H2; rewrite H3;  try omega.
+  destruct l'; destruct l; simpl in *; rewrite EQn0, EQn1; try lia.
   false. apply (H1 a). left~.
 
   assert (Q : n0 - 1 <= n1 - 1).
 
   case (Aeq_dec a a0); intro H4. rewrite <- H4 in *|-. clear H4.
-  apply H with (l:=l) (l':=l'); intros; try omega.
+  apply H with (l:=l) (l':=l'); intros; try lia.
   apply NoDup_cons_iff with (a:=a); trivial. 
   case (Aeq_dec b a); intro H5.
   assert (Q: ~ In b l).
    apply NoDup_cons_iff. rewrite H5; trivial.   
   contradiction.
   case (H1 b). simpl. right~.
-  intro. symmetry in H6. contradiction.
+  intro. subst. contradiction.
   intro. trivial.
 
   case (in_dec Aeq_dec a l); intro Q. 
   
   apply H with (l := remove Aeq_dec a (a0 :: l)) (l' := l');
-  intros; try omega. apply NoDup_remove_3; trivial.
-  apply remove_elim in H5. destruct H5.
-  apply H1 in H6. simpl in H6.
-  destruct H6; trivial. symmetry in H6.
-  contradiction.
+  intros; try lia. apply NoDup_remove_3; trivial.
+  apply remove_elim in H2. destruct H2.
+  apply H1 in H3. destruct H3; trivial. subst; contradiction.
 
   rewrite remove_In_length;
-  simpl length; try omega; trivial.
+  simpl length; try lia; trivial.
   right~.
 
-  apply H with (l:=l) (l':=l'); intros; try omega.
+  apply H with (l:=l) (l':=l'); intros; try lia.
   apply NoDup_cons_iff with (a:=a0); trivial.
-  case (Aeq_dec b a); intro H6. rewrite H6 in H5. contradiction.
+  case (Aeq_dec b a); intro H6. subst. contradiction.
   assert (Q' :  In b (a :: l')). apply H1. right~.
-  simpl in Q'. destruct Q'; trivial.
-  symmetry in H7. contradiction.
+  simpl in Q'. destruct Q'; trivial. subst. contradiction.
   
- omega. 
-  
+ lia.
 Qed.
 
 
@@ -520,7 +513,7 @@ Proof.
   assert (Q : length (a'::l) <= length l').
   apply subset_list. apply NoDup_cons; trivial.
   intros. simpl in H3. destruct H3. rewrite <- H3; trivial.
-  apply H0; trivial. simpl in Q. omega.
+  apply H0; trivial. simpl in Q. lia.
 Qed.
 
 
@@ -537,7 +530,7 @@ Proof.
    apply subset_list; trivial; intros.
    apply H1; trivial.
 
-  omega.
+  lia.
    
 Qed.
 
@@ -551,7 +544,7 @@ Proof.
   intros.
   case (set_In_dec Aeq_dec b l); intro H4; trivial.  
   apply subset_list' in H2; trivial.
-  omega. exists b. split~.   
+  lia. exists b. split~.   
 Qed.
 
 
@@ -570,7 +563,7 @@ Proof.
   destruct L; simpl in *|-*; trivial.
   destruct L'; trivial.
   false. apply (H0 a). left~.
-  apply H with (m := length L); try omega; intros.
+  apply H with (m := length L); try lia; intros.
   apply remove_elim in H2. destruct H2.
   apply H0 in H3. destruct H3; trivial.
   symmetry in H3. contradiction.
@@ -579,10 +572,10 @@ Qed.
 (** Additional lemmas for naturals numbers *)
 
 Lemma nat_leq_inv : forall m n, n <= m -> m >= n.
-Proof. intros; omega. Qed.
+Proof. intros; lia. Qed.
 
 Lemma nat_lt_inv : forall m n, n < m -> m > n.
-Proof. intros; omega. Qed.
+Proof. intros; lia. Qed.
 
 
 (** Additional lemmas for sets represented by lists *)
@@ -706,8 +699,8 @@ Lemma head_list_overflow : forall i L,
 Proof.
   intros. gen i. induction L; intros.
   destruct i; simpl; trivial.
-  simpl in H. destruct i; simpl; try omega.
-  rewrite IHL; try omega; trivial.
+  simpl in H. destruct i; simpl; try lia.
+  rewrite IHL; try lia; trivial.
 Qed.
 
 Lemma tail_list_overflow : forall i L,
@@ -715,15 +708,15 @@ Lemma tail_list_overflow : forall i L,
 Proof.
   intros. gen i. induction L; intros.
   destruct i; simpl; trivial.
-  simpl in H. destruct i; simpl; try omega.
-  apply IHL; try omega; trivial.
+  simpl in H. destruct i; simpl; try lia.
+  apply IHL; try lia; trivial.
 Qed.
 
 Lemma head_list_cons : forall i a L,
       i <> 0 -> head_list i (a :: L) = a :: head_list (i - 1) L.
 Proof.
   intros. destruct i. false. simpl.
-  replace (i - 0) with i; try omega.
+  replace (i - 0) with i; try lia.
   trivial.
 Qed.
 
@@ -731,7 +724,7 @@ Lemma tail_list_cons : forall i a L,
       i <> 0 -> tail_list i (a :: L) = tail_list (i - 1) L.
 Proof.
   intros. destruct i. false. simpl.
-  replace (i - 0) with i; try omega.
+  replace (i - 0) with i; try lia.
   trivial.
 Qed.
 
@@ -743,7 +736,7 @@ Lemma head_list_not_nil : forall (L : list A) (n : nat),
      head_list n L <> [] .
 Proof.
   intros. 
-  destruct L; simpl in *|-*. omega.
+  destruct L; simpl in *|-*. lia.
   destruct n; simpl. false.
   discriminate.
 Qed.  
@@ -756,9 +749,9 @@ Proof.
   intros. gen_eq l : (length L); intro H0.
   gen H0 H. gen n L. induction l using peano_induction; intros.
   destruct L; simpl in *|-*.
-  assert (Q : n = 0). omega. rewrite Q. simpl; trivial.
+  assert (Q : n = 0). lia. rewrite Q. simpl; trivial.
   destruct n. simpl. trivial.
-  simpl. rewrite H with (m := length L); omega.
+  simpl. rewrite H with (m := length L); lia.
 Qed.  
 
 Lemma tail_list_length : forall (L : list A) (n : nat),
@@ -768,9 +761,9 @@ Proof.
   intros. gen_eq l : (length L); intro H0.
   gen H0 H. gen n L. induction l using peano_induction; intros.
   destruct L; simpl in *|-*.
-  assert (Q : n = 0). omega. rewrite Q. simpl; omega.
-  destruct n. simpl. omega.
-  simpl. rewrite H with (m := length L); omega.
+  assert (Q : n = 0). lia. rewrite Q. simpl; lia.
+  destruct n. simpl. lia.
+  simpl. rewrite H with (m := length L); lia.
 Qed.  
 
 
@@ -788,7 +781,7 @@ Proof.
   destruct n; simpl in *|-.
   rewrite H0. rewrite H2. simpl; trivial.
   rewrite H0. simpl. fequals. rewrite H2.
-  apply H with (m := length L) (n:=n); try omega; trivial.
+  apply H with (m := length L) (n:=n); try lia; trivial.
 Qed.
 
 End ListFacts.    
@@ -800,4 +793,3 @@ Lemma set_In_nat_dec : forall n (l : list nat), {In n l} + {~ In n l}.
 Proof.
   intros. apply (eq_mem_list_dec _ nat_eqdec n l).
 Defined.
-

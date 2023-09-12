@@ -1,0 +1,21 @@
+-R theories/ NAC
+-Q tlc/src TLC
+
+theories/Basics.v
+theories/Terms.v
+theories/Perm.v
+theories/Disagr.v
+theories/Tuples.v
+theories/Fresh.v
+theories/Alpha_Equiv.v
+theories/Equiv.v
+theories/Equiv_Tuples.v
+theories/AACC_Equiv.v
+theories/C_Equiv.v
+theories/Problems.v
+theories/Substs.v
+theories/C_Unif.v
+theories/C_Unif_Termination.v
+theories/C_Unif_Soundness.v
+theories/C_Unif_Completeness.v
+theories/C_Matching.v

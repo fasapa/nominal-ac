@@ -683,7 +683,7 @@ Defined.
 Hint Resolve TPlength_leq_term_size.
 
 
-Require Import Omega.
+Require Import Lia.
 
 Lemma TPlength_TPithdel : forall i t E n,
       (TPlength t E n) <> 1 ->
@@ -695,17 +695,17 @@ Proof.
   case (le_dec i (TPlength t1 E n)); intro H0.
   case (nat_eqdec (TPlength t1 E n) 1); intro H1.
   rewrite TPithdel_t1_Pr; trivial.
-  simpl. rewrite H1. simpl. omega.
+  simpl. rewrite H1. simpl. lia.
   rewrite TPithdel_Pr_le; trivial.
   simpl. rewrite IHt1; trivial.
-  assert (Q:TPlength t1 E n >= 1). auto. omega.
+  assert (Q:TPlength t1 E n >= 1). auto. lia.
   case (nat_eqdec (TPlength t2 E n) 1); intro H1.
-  rewrite TPithdel_t2_Pr; try omega.
-  simpl. rewrite H1. omega.
-  rewrite TPithdel_Pr_gt; try omega.
+  rewrite TPithdel_t2_Pr; try lia.
+  simpl. rewrite H1. lia.
+  rewrite TPithdel_Pr_gt; try lia.
   simpl. rewrite IHt2; trivial. 
   assert (Q:TPlength t1 E n >= 1). auto. 
-  assert (Q': TPlength t2 E n >= 1). auto. omega.
+  assert (Q': TPlength t2 E n >= 1). auto. lia.
   case (nat_pair_eqdec (E, n) (n0, n1)); intro H0.
   inverts H0. rewrite TPlength_Fc_eq in *|-*.
   rewrite TPithdel_Fc_eq; trivial.
@@ -726,13 +726,13 @@ Proof.
   generalize H; clear H. simpl; intro H.
   assert (Q : 1 <= TPlength t2 E n). apply TPlength_1_le.  
   case (le_dec i (TPlength t1 E n)); intro H0.
-  omega.
+  lia.
   case (le_dec (TPlength t1 E n + TPlength t2 E n) (TPlength t1 E n));
     intro H1.
-  omega.
+  lia.
   replace (TPlength t1 E n + TPlength t2 E n - TPlength t1 E n)
-    with (TPlength t2 E n); try omega.       
-  apply IHt2; omega.
+    with (TPlength t2 E n); try lia.       
+  apply IHt2; lia.
   case (nat_pair_eqdec (n0, n1) (E, n)); intro H0.
   generalize H. clear H. inversion H0. rewrite TPlength_Fc_eq.
   intro H. rewrite 2 TPith_Fc_eq. apply IHt; trivial.
@@ -752,18 +752,18 @@ Proof.
   simpl in H. simpl.
   assert (Q : 1 <= TPlength t2 E n). apply TPlength_1_le.
   case (le_dec i (TPlength t1 E n)); intro H0.
-  omega.
+  lia.
   case (nat_eqdec (TPlength t2 E n) 1); intro H1.
   rewrite H1. simpl.
   case (le_dec (TPlength t1 E n + 1) (TPlength t1 E n)); intro H2.
-  omega. trivial.
+  lia. trivial.
   apply eq_nat_diff in H1. rewrite H1.
   case (le_dec (TPlength t1 E n + TPlength t2 E n) (TPlength t1 E n));
     intro H2.
-  omega.
+  lia.
   replace (TPlength t1 E n + TPlength t2 E n - TPlength t1 E n) with
-      (TPlength t2 E n); try omega.
-  f_equal. apply IHt2; omega.
+      (TPlength t2 E n); try lia.
+  f_equal. apply IHt2; lia.
   case (nat_eqdec (TPlength (Fc n0 n1 t) E n) 1); intro H0.
   rewrite 2 TPithdel_TPlength_1; trivial.  
   case (nat_pair_eqdec (n0, n1) (E, n)); intro H1.
@@ -787,15 +787,15 @@ Proof.
   simpl; trivial. simpl in H1. false.
   simpl in H1. false.
   case (nat_eqdec (TPlength t1 E n) 1); intro H2.
-  rewrite TPithdel_t1_Pr; try omega.
-  rewrite TPith_Pr_gt; try omega.
+  rewrite TPithdel_t1_Pr; try lia.
+  rewrite TPith_Pr_gt; try lia.
   rewrite H2. simpl.
   case (nat_eqdec i 0); intro H3. rewrite H3. apply TPith_0.
-  assert (Q : i = 1). omega. rewrite Q; trivial.
+  assert (Q : i = 1). lia. rewrite Q; trivial.
   assert (Q : TPlength t1 E n >= 1). auto.
-  rewrite TPithdel_Pr_le; try omega.
-  rewrite 2 TPith_Pr_le; try omega.
-  apply IHt1; trivial. rewrite TPlength_TPithdel; omega.
+  rewrite TPithdel_Pr_le; try lia.
+  rewrite 2 TPith_Pr_le; try lia.
+  apply IHt1; trivial. rewrite TPlength_TPithdel; lia.
   case (nat_pair_eqdec (E, n) (n0, n1)); intro H2.
   inverts H2. rewrite TPlength_Fc_eq in H1.
   rewrite TPithdel_Fc_eq; trivial.
@@ -820,17 +820,17 @@ Proof.
   assert (Q : TPlength t1 E n >= 1). auto.
   assert (Q' : TPlength t2 E n >= 1). auto.
   case (nat_eqdec (TPlength t2 E n) 1); intro H2. 
-  rewrite TPithdel_t2_Pr; try omega.
-  rewrite TPith_Pr_le; try omega.
+  rewrite TPithdel_t2_Pr; try lia.
+  rewrite TPith_Pr_le; try lia.
   simpl. replace (TPlength t1 E n + TPlength t2 E n - 1) with
-          (TPlength t1 E n); try omega.
-  rewrite TPith_overflow; try omega; trivial.
-  simpl. omega. rewrite TPithdel_Pr_gt; try omega.
+          (TPlength t1 E n); try lia.
+  rewrite TPith_overflow; try lia; trivial.
+  simpl. lia. rewrite TPithdel_Pr_gt; try lia.
   simpl TPlength.
-  rewrite 2 TPith_Pr_gt; try omega.
-  rewrite IHt2; try omega.
+  rewrite 2 TPith_Pr_gt; try lia.
+  rewrite IHt2; try lia.
   replace (TPlength t1 E n + TPlength t2 E n - 1 - TPlength t1 E n)
-   with (TPlength t2 E n - 1); try omega. trivial.
+   with (TPlength t2 E n - 1); try lia. trivial.
   case (nat_pair_eqdec (E, n) (n0, n1)); intro H2. inverts H2.
   rewrite TPlength_Fc_eq in *|-*.
   rewrite TPithdel_Fc_eq; trivial.
@@ -855,28 +855,28 @@ Proof.
   case (le_dec j (TPlength t1 E n)); intro H2. 
   case (nat_eqdec (TPlength t1 E n) 1); intro H3.
   rewrite TPithdel_t1_Pr; trivial.
-  rewrite TPith_Pr_gt; simpl TPlength; try omega.
-  rewrite 1 TPith_overflow; try omega. 
+  rewrite TPith_Pr_gt; simpl TPlength; try lia.
+  rewrite 1 TPith_overflow; try lia. 
   replace (TPlength t1 E n + TPlength t2 E n - TPlength t1 E n)
-    with (TPlength t2 E n); try omega; trivial.
+    with (TPlength t2 E n); try lia; trivial.
   rewrite TPithdel_Pr_le; trivial.
-  rewrite 2 TPith_Pr_gt; simpl TPlength; try omega.
+  rewrite 2 TPith_Pr_gt; simpl TPlength; try lia.
   rewrite TPlength_TPithdel; trivial.
-  rewrite TPith_overflow; try omega. 
+  rewrite TPith_overflow; try lia. 
   replace (TPlength t1 E n + TPlength t2 E n - TPlength t1 E n)
-    with (TPlength t2 E n); try omega; trivial.  
-  rewrite TPlength_TPithdel; try omega.
-  case (nat_eqdec (TPlength t2 E n) 1); intro H3; try omega.
-  rewrite TPithdel_Pr_gt; try omega.
-  rewrite 2 TPith_Pr_gt; simpl TPlength; try omega.
-  rewrite IHt2; try omega.
+    with (TPlength t2 E n); try lia; trivial.  
+  rewrite TPlength_TPithdel; try lia.
+  case (nat_eqdec (TPlength t2 E n) 1); intro H3; try lia.
+  rewrite TPithdel_Pr_gt; try lia.
+  rewrite 2 TPith_Pr_gt; simpl TPlength; try lia.
+  rewrite IHt2; try lia.
   replace (TPlength t1 E n + TPlength t2 E n - TPlength t1 E n)
-    with (TPlength t2 E n); try omega; trivial.
+    with (TPlength t2 E n); try lia; trivial.
   case (nat_pair_eqdec (E, n) (n0, n1)); intro H2.
   inverts H2.
   rewrite TPlength_Fc_eq in *|-*.
   rewrite TPithdel_Fc_eq; trivial.
-  rewrite 2 TPith_Fc_eq. rewrite IHt; try omega; trivial.
+  rewrite 2 TPith_Fc_eq. rewrite IHt; try lia; trivial.
   rewrite TPlength_Fc_diff in H. false.
   intro H3. apply H2. symmetry. trivial.
   simpl in H. false.
@@ -889,31 +889,31 @@ Lemma TPith_TPithdel_lt : forall t E n i j,
 Proof.
   intros t E n. 
   induction t; intros.
-  simpl in H1. omega. simpl in H1. omega.
-  simpl in H1. omega. simpl in H1.
+  simpl in H1. lia. simpl in H1. lia.
+  simpl in H1. lia. simpl in H1.
   case (le_dec j (TPlength t1 E n)); intro H2.
-  rewrite TPith_Pr_le; try omega.
-  case (nat_eqdec (TPlength t1 E n) 1); intro H3; try omega.
-  rewrite TPithdel_Pr_le; try omega.
-  rewrite TPith_Pr_le; try omega.
-  rewrite IHt1; try omega; trivial.
-  rewrite TPlength_TPithdel; try omega; trivial.
+  rewrite TPith_Pr_le; try lia.
+  case (nat_eqdec (TPlength t1 E n) 1); intro H3; try lia.
+  rewrite TPithdel_Pr_le; try lia.
+  rewrite TPith_Pr_le; try lia.
+  rewrite IHt1; try lia; trivial.
+  rewrite TPlength_TPithdel; try lia; trivial.
   case (nat_eqdec (TPlength t2 E n) 1); intro H3.
-  rewrite TPithdel_t2_Pr; try omega; trivial.
-  rewrite TPith_Pr_le; try omega; trivial.
-  rewrite TPithdel_Pr_gt; try omega.
+  rewrite TPithdel_t2_Pr; try lia; trivial.
+  rewrite TPith_Pr_le; try lia; trivial.
+  rewrite TPithdel_Pr_gt; try lia.
   case (le_dec i (TPlength t1 E n)); intro H4. 
-  rewrite 2 TPith_Pr_le; try omega; trivial.
-  rewrite 2 TPith_Pr_gt; try omega; trivial.
-  rewrite IHt2; try omega; trivial.
+  rewrite 2 TPith_Pr_le; try lia; trivial.
+  rewrite 2 TPith_Pr_gt; try lia; trivial.
+  rewrite IHt2; try lia; trivial.
   case (nat_pair_eqdec (n0, n1) (E, n)); intro H2.
   inverts H2. rewrite TPlength_Fc_eq in H1.
   rewrite TPith_Fc_eq.
-  case (nat_eqdec (TPlength t E n) 1); intro H2. omega.
+  case (nat_eqdec (TPlength t E n) 1); intro H2. lia.
   rewrite TPithdel_Fc_eq; trivial.
   rewrite TPith_Fc_eq. rewrite IHt; trivial.
-  rewrite TPlength_Fc_diff in H1; trivial. omega.
-  simpl in H1. omega.
+  rewrite TPlength_Fc_diff in H1; trivial. lia.
+  simpl in H1. lia.
 Qed.
 
 Hint Resolve TPith_TPithdel_lt.
@@ -924,37 +924,37 @@ Lemma TPith_TPithdel_geq : forall t E n i j,
       TPith i (TPithdel j t E n) E n = TPith (i + 1) t E n.
 Proof.
   intros t E n. induction t; intros.
-  simpl in H1. omega. simpl in H1. omega.
-  simpl in H1. omega. simpl in H1.
+  simpl in H1. lia. simpl in H1. lia.
+  simpl in H1. lia. simpl in H1.
   case (le_dec j (TPlength t1 E n)); intro H2.
   case (nat_eqdec (TPlength t1 E n) 1); intro H3.
   rewrite TPithdel_t1_Pr; trivial.
-  rewrite TPith_Pr_gt; try omega.
-  replace (i + 1 - TPlength t1 E n) with i; try omega; trivial.
-  rewrite TPithdel_Pr_le; try omega.
+  rewrite TPith_Pr_gt; try lia.
+  replace (i + 1 - TPlength t1 E n) with i; try lia; trivial.
+  rewrite TPithdel_Pr_le; try lia.
   case (le_dec (i + 1) (TPlength t1 E n)); intro H4.
-  rewrite 2 TPith_Pr_le; try omega.
-  rewrite IHt1; try omega; trivial.
-  rewrite TPlength_TPithdel; try omega; trivial.
-  rewrite 2 TPith_Pr_gt; try omega.
-  rewrite TPlength_TPithdel; try omega; trivial.
+  rewrite 2 TPith_Pr_le; try lia.
+  rewrite IHt1; try lia; trivial.
+  rewrite TPlength_TPithdel; try lia; trivial.
+  rewrite 2 TPith_Pr_gt; try lia.
+  rewrite TPlength_TPithdel; try lia; trivial.
   assert (Q: TPlength t1 E n >= 1). auto.
   replace (i - (TPlength t1 E n - 1)) with
-          (i + 1 - TPlength t1 E n); try omega; trivial.
-  rewrite TPlength_TPithdel; try omega. 
-  case (nat_eqdec (TPlength t2 E n) 1); intro H3; try omega.
-  rewrite TPithdel_Pr_gt; try omega.
-  rewrite 2 TPith_Pr_gt; try omega.
+          (i + 1 - TPlength t1 E n); try lia; trivial.
+  rewrite TPlength_TPithdel; try lia. 
+  case (nat_eqdec (TPlength t2 E n) 1); intro H3; try lia.
+  rewrite TPithdel_Pr_gt; try lia.
+  rewrite 2 TPith_Pr_gt; try lia.
   gen_eq ii : (i - TPlength t1 E n); intro Hii.
-  replace (i + 1 - TPlength t1 E n) with (ii + 1); try omega.
-  rewrite IHt2; try omega; trivial.
+  replace (i + 1 - TPlength t1 E n) with (ii + 1); try lia.
+  rewrite IHt2; try lia; trivial.
   case (nat_pair_eqdec (n0, n1) (E, n)); intro H2.
   inverts H2. rewrite TPlength_Fc_eq in H1.
-  case (nat_eqdec (TPlength t E n) 1); intro H2. omega.
+  case (nat_eqdec (TPlength t E n) 1); intro H2. lia.
   rewrite TPithdel_Fc_eq; trivial.
   rewrite 2 TPith_Fc_eq. rewrite IHt; trivial.
-  rewrite TPlength_Fc_diff in H1; trivial. omega.
-  simpl in H1. omega.
+  rewrite TPlength_Fc_diff in H1; trivial. lia.
+  simpl in H1. lia.
 Qed.
 
 Hint Resolve TPith_TPithdel_geq.
@@ -965,28 +965,28 @@ Lemma TPith_TPithdel_exists : forall i j t E n,
 Proof.
   intros. case (le_dec j i); intro H0.
   case (nat_eqdec i 0); intro H1.
-  assert (Q : j = 0). omega.
-  rewrite TPith_TPithdel_leq_1; try omega.
+  assert (Q : j = 0). lia.
+  rewrite TPith_TPithdel_leq_1; try lia.
   exists 2; trivial.
   case (le_dec (TPlength t E n) i); intro H2.
   case (le_dec (TPlength t E n) j); intro H3.
-  rewrite TPith_TPithdel_geq_TPlength; try omega.
+  rewrite TPith_TPithdel_geq_TPlength; try lia.
   exists (TPlength t E n - 1); trivial.
-  rewrite TPith_TPithdel_geq_TPlength'; try omega.
+  rewrite TPith_TPithdel_geq_TPlength'; try lia.
   exists (TPlength t E n); trivial.
-  rewrite TPith_TPithdel_geq; try omega.
+  rewrite TPith_TPithdel_geq; try lia.
   exists (i + 1); trivial.
   case (nat_eqdec i 0); intro H1. rewrite H1.
   rewrite TPith_0. case (nat_eqdec j 1); intro H2.
-  rewrite TPith_TPithdel_leq_1; try omega.
+  rewrite TPith_TPithdel_leq_1; try lia.
   exists 2; trivial.
-  rewrite TPith_TPithdel_lt; try omega.
+  rewrite TPith_TPithdel_lt; try lia.
   exists 1; trivial.
-  assert (Q : TPlength t E n >= 1). auto. omega.
+  assert (Q : TPlength t E n >= 1). auto. lia.
   case (le_dec (TPlength t E n) i); intro H2.
-  rewrite TPith_TPithdel_geq_TPlength; try omega.
+  rewrite TPith_TPithdel_geq_TPlength; try lia.
   exists (TPlength t E n - 1); trivial.
-  rewrite TPith_TPithdel_lt; try omega.
+  rewrite TPith_TPithdel_lt; try lia.
   exists i; trivial.
 Qed.  
 
@@ -996,66 +996,66 @@ Lemma TPithdel_lt_comm : forall t E n i j,
       TPithdel (j - 1) (TPithdel i t E n) E n.
 Proof.
   intros t E n.
-  induction t; intros. simpl in H1. omega.
-  simpl in H1. omega. simpl in H1. omega.
+  induction t; intros. simpl in H1. lia.
+  simpl in H1. lia. simpl in H1. lia.
   simpl in H1.
   case (le_dec j (TPlength t1 E n)); intro H2.
-  case (nat_eqdec (TPlength t1 E n) 1); intro H3; try omega.
-  rewrite TPithdel_Pr_le with (i:=j); try omega.
-  rewrite TPithdel_Pr_le with (t1:=t1); try omega.
+  case (nat_eqdec (TPlength t1 E n) 1); intro H3; try lia.
+  rewrite TPithdel_Pr_le with (i:=j); try lia.
+  rewrite TPithdel_Pr_le with (t1:=t1); try lia.
   case (nat_eqdec (TPlength t1 E n) 2); intro H4.
   rewrite 2 TPithdel_t1_Pr;
-  try rewrite TPlength_TPithdel; try omega; trivial.
+  try rewrite TPlength_TPithdel; try lia; trivial.
   rewrite 2 TPithdel_Pr_le;
-  try rewrite TPlength_TPithdel; try omega; trivial. fequals. 
-  rewrite IHt1; try omega; trivial.
+  try rewrite TPlength_TPithdel; try lia; trivial. fequals. 
+  rewrite IHt1; try lia; trivial.
   case (nat_eqdec (TPlength t2 E n) 1); intro H3.
-  rewrite TPithdel_t2_Pr; try omega; trivial.
+  rewrite TPithdel_t2_Pr; try lia; trivial.
   case (le_dec i (TPlength t1 E n)); intro H4.
   case (nat_eqdec (TPlength t1 E n) 1); intro H5.
-  rewrite TPithdel_t1_Pr with (t1 := t1); try omega.
-  rewrite 2 TPithdel_TPlength_1; try omega; trivial.
-  rewrite TPithdel_Pr_le; try omega.
-  rewrite TPithdel_t2_Pr; try omega; trivial.
-  rewrite TPlength_TPithdel; try omega. omega.  
-  rewrite TPithdel_Pr_gt; try omega.
+  rewrite TPithdel_t1_Pr with (t1 := t1); try lia.
+  rewrite 2 TPithdel_TPlength_1; try lia; trivial.
+  rewrite TPithdel_Pr_le; try lia.
+  rewrite TPithdel_t2_Pr; try lia; trivial.
+  rewrite TPlength_TPithdel; try lia. lia.  
+  rewrite TPithdel_Pr_gt; try lia.
   case (le_dec i (TPlength t1 E n)); intro H4.
   case (nat_eqdec (TPlength t1 E n) 1); intro H5.
   rewrite 2 TPithdel_t1_Pr with (i:=i); trivial.
   rewrite H5. trivial.
   rewrite 2 TPithdel_Pr_le with (i:=i); trivial.  
   rewrite TPithdel_Pr_gt;
-  try rewrite TPlength_TPithdel; try omega. fequals.
+  try rewrite TPlength_TPithdel; try lia. fequals.
   replace (j - 1 - (TPlength t1 E n - 1)) with
-  (j - TPlength t1 E n); try omega; trivial.
+  (j - TPlength t1 E n); try lia; trivial.
   case (nat_eqdec (TPlength t2 E n) 2); intro H5. 
   rewrite TPithdel_t2_Pr with (i:=i);
-  try rewrite TPlength_TPithdel; try omega.
-  rewrite TPithdel_Pr_gt; try omega.
+  try rewrite TPlength_TPithdel; try lia.
+  rewrite TPithdel_Pr_gt; try lia.
   rewrite TPithdel_t2_Pr; 
-  try rewrite TPlength_TPithdel; try omega; trivial.
+  try rewrite TPlength_TPithdel; try lia; trivial.
   rewrite 3 TPithdel_Pr_gt;
-  try rewrite TPlength_TPithdel; try omega; trivial. fequals.
+  try rewrite TPlength_TPithdel; try lia; trivial. fequals.
   gen_eq jj : (j - TPlength t1 E n); intro H6.
-  replace (j - 1 - TPlength t1 E n) with (jj - 1); try omega.
-  rewrite IHt2; try omega; trivial.
+  replace (j - 1 - TPlength t1 E n) with (jj - 1); try lia.
+  rewrite IHt2; try lia; trivial.
   case (nat_pair_eqdec (n0, n1) (E, n)); intro H2.
   inverts H2. rewrite TPlength_Fc_eq in H1.
-  case (nat_eqdec (TPlength t E n) 1); intro H2. omega.
+  case (nat_eqdec (TPlength t E n) 1); intro H2. lia.
   rewrite TPithdel_Fc_eq; trivial.
   rewrite TPithdel_Fc_eq with (t:=t); trivial.
   case (nat_eqdec (TPlength t E n) 2); intro H3.
   rewrite TPithdel_TPlength_1 with (i:=i);
   autorewrite with tuples;
-  try rewrite TPlength_TPithdel; try omega; trivial.
+  try rewrite TPlength_TPithdel; try lia; trivial.
   rewrite TPithdel_TPlength_1 with (i:=j-1);
     autorewrite with tuples; try rewrite TPlength_TPithdel;
-  try omega; trivial.  
+  try lia; trivial.  
   rewrite 2 TPithdel_Fc_eq;
-  try rewrite TPlength_TPithdel; try omega; trivial.
+  try rewrite TPlength_TPithdel; try lia; trivial.
   rewrite IHt; trivial.
-  rewrite TPlength_Fc_diff in H1; trivial. omega.  
-  simpl in H1. omega.
+  rewrite TPlength_Fc_diff in H1; trivial. lia.  
+  simpl in H1. lia.
 Qed.
 
 Lemma TPithdel_geq_comm : forall t E n i j,
@@ -1064,11 +1064,11 @@ Lemma TPithdel_geq_comm : forall t E n i j,
       TPithdel j (TPithdel (i + 1) t E n) E n.
 Proof.
   intros. gen_eq ii : (i + 1); intro H2.
-  replace i with (ii - 1); try omega.
+  replace i with (ii - 1); try lia.
   case (nat_eqdec j 0); intro H3;
     try rewrite H3; repeat rewrite TPithdel_0.  
-  rewrite <- TPithdel_lt_comm; try omega; trivial.
-  rewrite <- TPithdel_lt_comm; try omega; trivial.
+  rewrite <- TPithdel_lt_comm; try lia; trivial.
+  rewrite <- TPithdel_lt_comm; try lia; trivial.
 Qed.  
    
 
@@ -1105,8 +1105,8 @@ Proof.
   autorewrite with tuples; trivial.
   rewrite TPlength_Fc_diff; trivial.
   simpl. case (set_In_dec nat_eqdec n0 S0); intro H2.
-  case (nat_pair_eqdec (n0 + E0 + 1, n1) (E, n)); intro H3; try omega.
-  inverts H3; try omega. rewrite TPlength_Fc_diff; trivial.
+  case (nat_pair_eqdec (n0 + E0 + 1, n1) (E, n)); intro H3; try lia.
+  inverts H3; try lia. rewrite TPlength_Fc_diff; trivial.
   rewrite TPlength_Fc_diff; trivial.
   simpl; trivial.
 Qed.
@@ -1120,8 +1120,8 @@ Proof.
   case (le_dec i (TPlength t1 E n)); intro H1.
   rewrite TPith_Pr_le; trivial. simpl rpl_super.
   rewrite TPith_Pr_le; trivial. rewrite TPlength_rpl_super; trivial.
-  rewrite TPith_Pr_gt; try omega. simpl rpl_super.
-  rewrite TPith_Pr_gt; try rewrite TPlength_rpl_super; try omega; trivial. 
+  rewrite TPith_Pr_gt; try lia. simpl rpl_super.
+  rewrite TPith_Pr_gt; try rewrite TPlength_rpl_super; try lia; trivial. 
   case (nat_pair_eqdec (n0,n1) (E,n)); intro H1.
   inverts H1. autorewrite with tuples.
   simpl. case (set_In_dec nat_eqdec E S0); intro H1; try contradiction.
@@ -1129,7 +1129,7 @@ Proof.
   rewrite TPith_Fc_diff; trivial. simpl.
   case (set_In_dec nat_eqdec n0 S0); intro H2.
   case (nat_pair_eqdec (n0 + E0 + 1, n1) (E,n));
-    intro H3. inverts H3; try omega.
+    intro H3. inverts H3; try lia.
   rewrite TPith_Fc_diff; trivial.
   rewrite TPith_Fc_diff; trivial. 
   simpl; trivial.
@@ -1150,12 +1150,12 @@ Proof.
   rewrite TPithdel_Pr_le; try rewrite TPlength_rpl_super; trivial.
   rewrite IHt1; trivial.
   case (nat_eqdec (TPlength t2 E n) 1); intro H2.
-  rewrite TPithdel_t2_Pr; try omega. simpl rpl_super.
+  rewrite TPithdel_t2_Pr; try lia. simpl rpl_super.
   rewrite TPithdel_t2_Pr;
-    try rewrite TPlength_rpl_super; try omega; trivial.
-  rewrite TPithdel_Pr_gt; try omega. simpl rpl_super.
+    try rewrite TPlength_rpl_super; try lia; trivial.
+  rewrite TPithdel_Pr_gt; try lia. simpl rpl_super.
   rewrite TPithdel_Pr_gt;
-    try rewrite TPlength_rpl_super; try omega; trivial.
+    try rewrite TPlength_rpl_super; try lia; trivial.
   rewrite IHt2; trivial.
   case (nat_pair_eqdec (n0,n1) (E,n)); intro H1.
   inverts H1. case (nat_eqdec (TPlength t E n) 1); intro H1.
@@ -1168,7 +1168,7 @@ Proof.
   rewrite TPithdel_Fc_diff; trivial.
   simpl. case (set_In_dec nat_eqdec n0 S0); intro H2; try contradiction.
   case (nat_pair_eqdec (n0 + E0 + 1, n1) (E,n)); intro H3.
-  inverts H3; try omega.
+  inverts H3; try lia.
   rewrite TPithdel_Fc_diff; trivial.
   rewrite TPithdel_Fc_diff; trivial. 
   simpl; trivial.
@@ -1187,7 +1187,7 @@ Proof.
   simpl. case (le_dec i (TPlength t1 E n)); intro H0.
   rewrite TPith_Pr_le in H; trivial.
   apply set_union_intro1. apply (IHt1 i); trivial.
-  rewrite TPith_Pr_gt in H; try omega.
+  rewrite TPith_Pr_gt in H; try lia.
   apply set_union_intro2. apply (IHt2 (i - TPlength t1 E n)); trivial.
   case (nat_pair_eqdec (n0,n1) (E,n)); intro H1. inverts H1.
   autorewrite with tuples in H. simpl. apply set_add_intro1.
@@ -1211,9 +1211,9 @@ Proof.
   apply set_union_intro1. apply (IHt1 i); trivial.
   apply set_union_intro2; trivial.
   case (nat_eqdec (TPlength t2 E n) 1); intro H1.
-  rewrite TPithdel_t2_Pr in H; try omega.
+  rewrite TPithdel_t2_Pr in H; try lia.
   apply set_union_intro1; trivial.
-  rewrite TPithdel_Pr_gt in H; try omega. simpl in H.
+  rewrite TPithdel_Pr_gt in H; try lia. simpl in H.
   apply set_union_elim in H. destruct H.
   apply set_union_intro1; trivial.
   apply set_union_intro2.
@@ -1241,7 +1241,7 @@ Proof.
   case (set_In_dec nat_eqdec n0 S0); intro H1; simpl.
   intro. apply IHt. apply set_add_elim in H2.
   destruct H2; trivial. assert (Q: m >= n). apply H; trivial.
-  assert (Q': n <> n0 + m + 1). omega. contradiction.
+  assert (Q': n <> n0 + m + 1). lia. contradiction.
   intro. apply IHt. apply set_add_elim in H2.
   destruct H2; trivial. rewrite H2 in H0. contradiction.
 Qed.
@@ -1264,15 +1264,15 @@ Proof.
   case (le_dec a x); intro H1.
   exists x; intros. destruct H0.
   rewrite <- H0; trivial. apply H; trivial.
-  exists a; intros. destruct H0; try omega.
-  assert (Q: n <= x). apply H; trivial. omega.
+  exists a; intros. destruct H0; try lia.
+  assert (Q: n <= x). apply H; trivial. lia.
 Qed.
  
 Lemma pick_fresh_nat : forall (S1 : set nat),
                         exists m, ~ set_In m S1.
 Proof.
   intro. case (leq_nat_set S1); intros.
-  exists (S x). intro H0. apply H in H0. omega.
+  exists (S x). intro H0. apply H in H0. lia.
 Qed.
 
 
@@ -1320,10 +1320,10 @@ Proof.
   intros. unfold valid_col.
   split~; intros. destruct H.
   split~; intros. apply in_seq. 
-  apply H0 in H1. destruct H1. omega.
+  apply H0 in H1. destruct H1. lia.
   destruct H. split~; intros.
   apply H0 in H1. apply in_seq in H1.
-  destruct H1. split~; omega.
+  destruct H1. split~; lia.
 Qed.
 
 
@@ -1355,14 +1355,14 @@ Proof.
   intros. apply H1 in H2.
   destruct H2.
   apply in_seq.
-  split~. omega.
+  split~. lia.
 Qed.  
 
 
 Lemma Args_col_list_length : forall L t E n,
       length (Args_col_list L t E n) = length L .
 Proof.
-  intros. induction L; simpl; omega.
+  intros. induction L; simpl; lia.
 Qed.
 
 
@@ -1412,7 +1412,7 @@ Proof.
   simpl. destruct Lt. false.
   rewrite H3. simpl.
   rewrite TPlength_TPith.
-  rewrite H with (m := length L); try omega.
+  rewrite H with (m := length L); try lia.
   intro H4. apply length_zero_iff_nil in H4.   
   contradiction.
 Qed.
@@ -1452,9 +1452,9 @@ Proof.
    apply length_zero_iff_nil. trivial.
   rewrite 2 Args_right_assoc_cons; trivial.
   simpl. rewrite <- H with (m := length L0 + length L1); simpl;
-         try omega.
+         try lia.
   destruct L0. simpl; trivial.
-  simpl. omega.
+  simpl. lia.
 Qed.
 
 
@@ -1467,7 +1467,7 @@ Proof.
   gen a b. induction L; intros; simpl in *|-; try contradiction.
   destruct H0. rewrite <- H. trivial.
   gen H2. case (le_dec a (hd 0 L)); intros H2 H3; try contradiction.
-  apply IHL; try omega; trivial.
+  apply IHL; try lia; trivial.
 Qed.
 
 Lemma sorted_nat_list_cons' : forall a L,
@@ -1478,7 +1478,7 @@ Proof.
   intros. apply sorted_nat_list_cons with (b:=b) in H0; trivial.
   assert (Q : a <> b).
    intro H2. rewrite H2 in H. contradiction.
-  omega.
+  lia.
 Qed.
 
 Lemma assoc_TPlength : forall L L' E i n,
@@ -1505,18 +1505,18 @@ Proof.
   simpl in *|-*.
   gen H1. case (le_dec n0 (hd 0 L')); intros H8 H9; try contradiction.
   assert (Q1 : length (head_list term (n0 - i) L) <> 0).
-   rewrite head_list_length; simpl; try omega.
+   rewrite head_list_length; simpl; try lia.
   assert (Q2 : length (tail_list term (n0 - i) L) <> 0).
-   rewrite tail_list_length; simpl length; try omega. 
-  rewrite H with (m:= length L'); simpl; try omega; trivial.
+   rewrite tail_list_length; simpl length; try lia. 
+  rewrite H with (m:= length L'); simpl; try lia; trivial.
   rewrite Agrs_right_assoc_TPlength_append; trivial.
   rewrite <- head_tail_append with (L:=L) (n:=n0-i); trivial.
   intros.
   assert (Q3 : j - i >= 1 /\ j - i < length L).
    apply H3. right~.
-  destruct Q3. split~; try omega.
-  apply Q0 in H1. omega.
-  rewrite tail_list_length; simpl length; omega.
+  destruct Q3. split~; try lia.
+  apply Q0 in H1. lia.
+  rewrite tail_list_length; simpl length; lia.
 Qed.
   
   
@@ -1538,7 +1538,7 @@ Proof.
   rewrite Args_right_assoc_TPlength; trivial.
   rewrite Args_col_list_length; trivial.
   intros. apply H2 in H3.
-  destruct H3. split~; omega. 
+  destruct H3. split~; lia. 
 Qed.
 
 
@@ -1604,11 +1604,11 @@ Proof.
   assert (Q : exists k, ((n1 < n0 /\ k = n1) \/ (n1 > n0 /\ k = n1 - 1)) /\ 
               TPith k (TPithdel n0 s E n) E n = TPith n1 s E n).
    case (le_dec n1 n0); intro H9. 
-   exists n1. split~. left~. split~. omega.
-   rewrite TPith_TPithdel_lt; try omega. trivial.
-   exists (n1-1). split~. right~. split~. omega.
-   rewrite TPith_TPithdel_geq; try omega.
-   replace (n1 - 1 + 1) with n1; try omega. trivial.
+   exists n1. split~. left~. split~. lia.
+   rewrite TPith_TPithdel_lt; try lia. trivial.
+   exists (n1-1). split~. right~. split~. lia.
+   rewrite TPith_TPithdel_geq; try lia.
+   replace (n1 - 1 + 1) with n1; try lia. trivial.
 
   case Q; clear Q; intros k Q. destruct Q. 
 
@@ -1622,16 +1622,16 @@ Proof.
   rewrite <- H12.
   destruct H9; destruct H9; [left~ | right~]; rewrite H13.
   split~. right~. left~.
-  split~. omega. right~. left~. omega.    
+  split~. lia. right~. left~. lia.    
   
   unfold valid_col. split~; intros.
   apply NoDup_cons. simpl. intro; trivial.
   apply NoDup_nil. simpl in H12.
   destruct H12; try contradiction.
-  rewrite <- H12. rewrite TPlength_TPithdel; try omega.
+  rewrite <- H12. rewrite TPlength_TPithdel; try lia.
 
   case H with (m:=length L) (L:=L);
-    try omega; trivial.
+    try lia; trivial.
   unfold valid_col. split~.
   apply NoDup_cons; trivial.
   intro H12. apply H5. right~.
@@ -1646,13 +1646,13 @@ Proof.
   rewrite H10. split~.
   fequals. 
 
-  split~. simpl. omega.
+  split~. simpl. lia.
 
   split~; intros.
   simpl in H16. destruct H16.
   rewrite <- H16.
   destruct H9; destruct H9; simpl; [left~ | right~]; rewrite H17.
-  split~. split~. omega. right~. left~. omega.
+  split~. split~. lia. right~. left~. lia.
   apply H14 in H16.
   destruct H16; [left~ | right~].
   destruct H16. split~. destruct H17; [left~ | right~]. right~.
@@ -1663,7 +1663,7 @@ Proof.
   Focus 2.
   (* 2: { *) intros. simpl in H16.
   destruct H16. rewrite <- H16.
-  rewrite TPlength_TPithdel; try omega.
+  rewrite TPlength_TPithdel; try lia.
   apply H15. trivial. (* } *)
   apply NoDup_cons.
   Focus 2.
@@ -1671,26 +1671,26 @@ Proof.
 
   intro H16. apply H14 in H16.
   destruct H16; destruct H16.
-  destruct H17. omega.
-  destruct H9; destruct H9; try omega.
+  destruct H17. lia.
+  destruct H9; destruct H9; try lia.
   rewrite H18 in H17. contradiction.
-  destruct H17; try omega.
-  destruct H9; destruct H9; try omega.
+  destruct H17; try lia.
+  destruct H9; destruct H9; try lia.
   rewrite H18 in H17.
-  replace (n1 - 1 + 1) with n1 in H17; try omega.
+  replace (n1 - 1 + 1) with n1 in H17; try lia.
   contradiction.
   
   intro H16.
   rewrite Args_col_list_length in H16.
   rewrite H16 in H13.
   symmetry in H13.
-  replace (length L - 0) with (length L) in H13; try omega.
+  replace (length L - 0) with (length L) in H13; try lia.
   apply length_zero_iff_nil in H13. contradiction.
   intro H16. rewrite Args_col_list_length in H16.
   apply length_zero_iff_nil in H16. contradiction.
-  rewrite TPlength_TPith. omega.
+  rewrite TPlength_TPith. lia.
   rewrite TPlength_TPith. trivial.
-  rewrite TPlength_TPith. omega.
+  rewrite TPlength_TPith. lia.
   intro H2. rewrite Args_col_list_length in H2.
   apply length_zero_iff_nil in H2. contradiction.
   

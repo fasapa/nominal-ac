@@ -307,7 +307,7 @@ Proof.
   inverts H0. apply perm_is_Pr. apply H with (n:=n0).
   simpl. apply set_add_intro2; trivial.
   apply IHt with (n:=n1); trivial; intros.
-  apply H with (n1:=n2); trivial. simpl.
+  apply H with (n:=n2); trivial; simpl.
   apply set_add_intro1; trivial.
   unfold Proper_term in *|-*; intros.
   simpl in H0. destruct H0; try contradiction. inverts H0.

@@ -17,6 +17,7 @@ Description : A proof of the soundness of the C-unification algorithm is
 *)
 
 Require Export C_Unif_Termination.
+Require Import Coq.Arith.Peano_dec.
 
 (** Soundness of the C-unification algorithm *)
 	
@@ -840,7 +841,7 @@ Proof.
   assert (Q : fst Sl |- (Fc E n u) |^ snd Sl ~c (t |^ snd Sl)). 
    rewrite <- H7. apply H5; trivial. 
   inverts Q. destruct t; simpl in H14; inverts H14; trivial.
-  false. false. simpl in H14. omega. simpl in H14. omega.
+  false. false. simpl in H14. lia. simpl in H14. lia.
   destruct t; simpl in H13; inverts H13. false. false.
   destruct t; simpl in H13; inverts H13. false. false.  
   destruct H7. 

@@ -1,0 +1,7 @@
+*.aux
+*.vo
+*.vok
+*.vos
+*.glob
+.lia.cache
+*.d

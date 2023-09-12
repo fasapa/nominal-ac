@@ -30,7 +30,7 @@ Lemma c_equiv_Fc_elim : forall C E E' n n' t t',
 C |- Fc E n t ~c Fc E' n' t' -> (E = E' /\ n = n' /\ C |- t ~c t').  
 Proof. 
  intros. inverts H0. repeat split~.
- simpl in H6. omega.  simpl in H6. omega.
+ simpl in H6. lia.  simpl in H6. lia.
  false. destruct H. apply H. simpl. right~.
  destruct H. simpl in H0. destruct H0; apply H0; trivial.
  false. destruct H. apply H. simpl. right~.
@@ -44,7 +44,7 @@ Lemma c_equiv_Fc_c_elim : forall C n n' s1 s2 t1 t2,
                   (C |- s1 ~c t2 /\ C |- s2 ~c t1))).  
 Proof.
   intros. inverts H.
-  false. destruct H3. simpl in H. omega.
+  false. destruct H3. simpl in H. lia.
   destruct H. simpl in H0. destruct H0; apply H0; trivial.
   split~. split~.
 Qed.
@@ -119,7 +119,7 @@ Proof.
  apply ds_trans with (pi2:=p') in H0.
  destruct H0; [apply H | apply H4]; trivial.
  
- simpl in H. omega. simpl in H. omega.
+ simpl in H. lia. simpl in H. lia.
  
  inverts H7.
  apply IHequiv1 in H5.
@@ -163,9 +163,9 @@ Proof.
  apply H; intros. intro. apply n. gen_eq g : (!p'); intro. 
  replace p' with (!g) in H1. rewrite perm_inv_atom in H1. 
  replace ((!p) $ a) with ((!p) $ (p $ (g $ a))). rewrite perm_inv_atom. trivial.
- rewrite H1. trivial. rewrite H2. rewrite rev_involutive. trivial.
+ rewrite H1. trivial. rewrite EQg. rewrite rev_involutive. trivial.
 
- simpl in H. omega. simpl in H. omega.
+ simpl in H. lia. simpl in H. lia.
 
  apply fresh_Fc_elim in H0.
  apply fresh_Pr_elim in H0. destruct H0. apply fresh_Fc.
@@ -198,7 +198,7 @@ Proof.
  apply IHequiv. apply alpha_equiv_pi_comm. apply fresh_lemma_2; trivial.
  apply equiv_Su. intros. apply H.
  apply ds_cancel in H0; trivial.
- simpl in H. omega. simpl in H. omega.
+ simpl in H. lia. simpl in H. lia.
 Qed.
 
 
@@ -251,9 +251,9 @@ Size of terms is preserved by c_equiv.
 
 Lemma c_equiv_term_size : forall C s t, C |- s ~c t -> term_size s = term_size t.
 Proof.
-  intros. induction H; simpl; try omega.
-  rewrite perm_term_size in IHequiv. omega.
-  simpl in H. omega. simpl in H. omega.
+  intros. induction H; simpl; try lia.
+  rewrite perm_term_size in IHequiv. lia.
+  simpl in H. lia. simpl in H. lia.
 Qed.
 
 (**
@@ -266,7 +266,7 @@ Proof.
   intros. intro H'.
   apply c_equiv_term_size in H.
   apply psubterms_term_size_lt in H'.
-  omega.
+ lia.
 Qed.
 
 (**
@@ -280,7 +280,7 @@ Proof.
   apply c_equiv_term_size in H.
   apply psubterms_term_size_lt in H'.
   rewrite perm_term_size in H'.
-  omega.
+ lia.
 Qed.
 
 

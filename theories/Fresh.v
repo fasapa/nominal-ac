@@ -14,7 +14,7 @@
  ============================================================================
  *)
 
-Require Import Tuples.
+Require Import Tuples Coq.Arith.Peano_dec.
 Require Export Disagr.
 
 
@@ -152,7 +152,7 @@ Proof.
 Qed.  
 
 
-Require Import Omega.
+Require Import Lia.
 
 (** About freshness, TPith and TPithdel *)
  
@@ -172,12 +172,12 @@ Proof.
  split~; [apply IHt1; apply H | apply fresh_Pr; [apply IHt1; apply H | apply H]].
  destruct H. apply fresh_Pr_elim in H2. destruct H2. apply fresh_Pr; trivial.
  apply IHt1 with (i:=i); split~; trivial.
- rewrite TPith_Pr_gt; try omega. case (eq_nat_dec (TPlength t2 E n) 1); intro H1.
- rewrite TPithdel_t2_Pr; try omega. split~; intro. apply fresh_Pr_elim in H.
+ rewrite TPith_Pr_gt; try lia. case (eq_nat_dec  (TPlength t2 E n) 1); intro H1.
+ rewrite TPithdel_t2_Pr; try lia. split~; intro. apply fresh_Pr_elim in H.
  split~; try apply H. apply IHt2; apply H. apply fresh_Pr; try apply H.
  apply IHt2 with (i:=i - TPlength t1 E n); split~; try apply H.
  rewrite TPithdel_TPlength_1; trivial.
- rewrite TPithdel_Pr_gt; try omega. split~; intro. apply fresh_Pr_elim in H.
+ rewrite TPithdel_Pr_gt; try lia. split~; intro. apply fresh_Pr_elim in H.
  split~; [apply IHt2; apply H | apply fresh_Pr; [apply H |apply IHt2; apply H]].
  destruct H. apply fresh_Pr_elim in H2. destruct H2. apply fresh_Pr; trivial.
  apply IHt2 with (i:=i-TPlength t1 E n); split~; trivial. 
@@ -197,7 +197,6 @@ Proof.
  simpl; split~; intro H; try split~; auto; try apply H.
 Qed.
 
-
 (* About rpl_super and freshness *)
 
 Lemma fresh_rpl_super : forall C a S0 m t, C |- a # t <-> C |- a # rpl_super S0 m t.
@@ -214,6 +213,3 @@ Proof.
   gen H. case (set_In_dec nat_eqdec n S0); intros H H1;
   apply fresh_Fc_elim in H1; apply fresh_Fc; apply IHt; trivial.
 Qed.
-
-
-

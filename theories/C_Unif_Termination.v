@@ -19,7 +19,7 @@ Description : This file is dedicated to the proof of termination of the
 
 
 Require Export C_Unif.                            
-Require Import Wf.
+Require Import Coq.Init.Wf Coq.Arith.Peano_dec.
 
 (** Termination of the nominal C-unificaiton algorithm *)
 
@@ -109,39 +109,39 @@ Proof.
   repeat rewrite equ_Problem_size_add_fresh;
   repeat rewrite non_fixpoint_equ_add_fresh;
   repeat rewrite non_fixpoint_equ_rem_fresh;
-  repeat rewrite non_fixpoint_equ_add_fresh; try omega.       
+  repeat rewrite non_fixpoint_equ_add_fresh; try lia.       
 
 
   rewrite fresh_Problem_size_remove; trivial. simpl.
   assert (Q: fresh_Problem_size P > 0).
-  apply fresh_Problem_size_gt_0 with (a:=a) (s:=<<>>); trivial. omega.
+  apply fresh_Problem_size_gt_0 with (a:=a) (s:=<<>>); trivial. lia.
 
   rewrite fresh_Problem_size_remove; trivial. simpl.
   assert (Q: fresh_Problem_size P > 0).
-  apply fresh_Problem_size_gt_0 with (a:=a) (s:=%b); trivial. omega.
+  apply fresh_Problem_size_gt_0 with (a:=a) (s:=%b); trivial. lia.
 
   rewrite fresh_Problem_size_remove; trivial. simpl.
   assert (Q: fresh_Problem_size P > fresh_Problem_size P + (term_size s)  - Datatypes.S (term_size s)).
    assert (Q': fresh_Problem_size P > 0).
-    apply fresh_Problem_size_gt_0 with (a:=a) (s:=Fc E n s); trivial. omega.
+    apply fresh_Problem_size_gt_0 with (a:=a) (s:=Fc E n s); trivial. lia.
   assert (Q': fresh_Problem_size (P |+ (a #? s)) <= fresh_Problem_size P + term_size s). 
-  apply fresh_Problem_size_add. simpl in Q'. omega. apply set_add_intro1; trivial.
+  apply fresh_Problem_size_add. simpl in Q'. lia. apply set_add_intro1; trivial.
 
   rewrite fresh_Problem_size_remove; trivial. simpl.
   assert (Q: fresh_Problem_size P > 0).
-  apply fresh_Problem_size_gt_0 with (a:=a) (s:=[a]^s); trivial. omega.
+  apply fresh_Problem_size_gt_0 with (a:=a) (s:=[a]^s); trivial. lia.
 
   rewrite fresh_Problem_size_remove; trivial. simpl.
   assert (Q: fresh_Problem_size P > 0).
   apply fresh_Problem_size_gt_0 with (a:=a)(s:=[b]^s); trivial.
   assert (Q': fresh_Problem_size P > fresh_Problem_size P + (term_size s) -
-              Datatypes.S (term_size s)). omega.
+              Datatypes.S (term_size s)). lia.
   assert (Q'': fresh_Problem_size (P |+ (a #? s)) <= fresh_Problem_size P + term_size s). 
-  apply fresh_Problem_size_add. simpl in Q''. omega. apply set_add_intro1; trivial.
+  apply fresh_Problem_size_add. simpl in Q''. lia. apply set_add_intro1; trivial.
 
   rewrite fresh_Problem_size_remove; trivial. simpl.
   assert (Q: fresh_Problem_size P > 0).
-  apply fresh_Problem_size_gt_0 with (a:=a) (s:=pi|.X); trivial. omega.
+  apply fresh_Problem_size_gt_0 with (a:=a) (s:=pi|.X); trivial. lia.
 
   rewrite fresh_Problem_size_remove; trivial. simpl.
   assert (Q: fresh_Problem_size P > 0).
@@ -149,7 +149,7 @@ Proof.
   assert (Q': fresh_Problem_size P >
               fresh_Problem_size P + (term_size s) + (term_size t) -
               Datatypes.S (term_size s + term_size t)).
-  omega.
+  lia.
   assert (Q'': fresh_Problem_size (P |+ (a #? s) |+ (a #? t)) <=
                fresh_Problem_size P + (term_size s) + (term_size t)). 
   assert (Q'': fresh_Problem_size ((P |+ (a #? s)) |+ (a #? t)) <=
@@ -157,8 +157,8 @@ Proof.
   apply fresh_Problem_size_add.
   assert (Q''': fresh_Problem_size (P |+ (a #? s)) <=
                fresh_Problem_size P + (term_size s)).
-  apply fresh_Problem_size_add. omega.
-  simpl in Q''. omega. apply set_add_intro1. apply set_add_intro1; trivial.
+  apply fresh_Problem_size_add. lia.
+  simpl in Q''. lia. apply set_add_intro1. apply set_add_intro1; trivial.
 
 Qed.
 
@@ -195,7 +195,7 @@ Proof.
    apply equ_Problem_size_gt_0 with (s:=s) (t:=s); trivial. 
   assert (Q'' : term_size s > 0).
    apply term_size_gt_0.
-  simpl in Q. omega.
+  simpl in Q. lia.
    
   right~. left~. split~.
   
@@ -229,7 +229,7 @@ Proof.
    apply equ_Problem_size_gt_0 with (s:=<|s0,s1|>) (t:=<|t0,t1|>); trivial. 
   assert (Q''' : term_size s0 > 0).
    apply term_size_gt_0.
-  simpl in *|-*. omega.
+  simpl in *|-*. lia.
   apply set_add_intro1. apply set_add_intro1; trivial.
 
   right~. left~. split~.
@@ -252,7 +252,7 @@ Proof.
    apply equ_Problem_size_gt_0 with (s:=Fc E n t) (t:=Fc E n t'); trivial. 
   assert (Q'' : term_size t > 0).
    apply term_size_gt_0.
-  simpl in *|-*. omega.
+  simpl in *|-*. lia.
   apply set_add_intro1; trivial.
    
   right~. left~. split~.
@@ -291,7 +291,7 @@ Proof.
    apply equ_Problem_size_gt_0 with (s:=Fc 2 n (<| s0, s1 |>)) (t:=Fc 2 n (<| t0, t1 |>)); trivial. 
   assert (Q''' : term_size s0 > 0).
    apply term_size_gt_0.
-  simpl in *|-*. omega.
+  simpl in *|-*. lia.
   apply set_add_intro1. apply set_add_intro1; trivial.
 
   right~. left~. split~.
@@ -330,7 +330,7 @@ Proof.
    apply equ_Problem_size_gt_0 with (s:=Fc 2 n (<| s0, s1 |>)) (t:=Fc 2 n (<| t0, t1 |>)); trivial. 
   assert (Q''' : term_size s0 > 0).
    apply term_size_gt_0.
-  simpl in *|-*. omega.
+  simpl in *|-*. lia.
   apply set_add_intro1. apply set_add_intro1; trivial.
 
   
@@ -354,7 +354,7 @@ Proof.
    apply equ_Problem_size_gt_0 with (s:=[a]^t) (t:=[a]^t'); trivial. 
   assert (Q'' : term_size t > 0).
    apply term_size_gt_0.
-  simpl in *|-*. omega.
+  simpl in *|-*. lia.
   apply set_add_intro1; trivial.
 
   
@@ -386,7 +386,7 @@ Proof.
    apply equ_Problem_size_gt_0 with (s:=[a]^t) (t:=[b]^t'); trivial. 
   assert (Q''' : term_size t > 0).
    apply term_size_gt_0.
-  simpl in *|-*. rewrite perm_term_size in Q'. omega.
+  simpl in *|-*. rewrite perm_term_size in Q'. lia.
   apply set_add_intro1; apply set_add_intro1; trivial.
 
   left~.
@@ -453,14 +453,14 @@ Proof.
   assert (Q : equ_Problem_size P + equ_Problem_size (|[((pi ++ (! pi')|.X) ~? (([])|.X))]|)  >=
                equ_Problem_size (P |+ ((pi ++ (! pi')|.X) ~? (([])|.X)))).
   apply equ_Problem_size_add.
-  simpl in Q. omega. apply set_add_intro1; trivial.
+  simpl in Q. lia. apply set_add_intro1; trivial.
 
   rewrite non_fixpoint_equ_remove.
   rewrite non_fixpoint_equ_add.
   assert (Q : non_fixpoint_equ P > 0).
    apply non_fixpoint_equ_gt_0 with (s := pi|.X) (t := pi'|.X); trivial.
    intro H2. destruct H2. destruct H2. destruct H2. inverts H3. apply H0; trivial.
-  omega. intro H2. apply H0.
+  lia. intro H2. apply H0.
   assert (Q' : !pi' = []).
    gen_eq g : (!pi'); intro H'. clear H'.
    destruct g; trivial. symmetry in H2.
@@ -507,45 +507,43 @@ Proof.
   gen c s p0. induction n using peano_induction; intros.  
   apply Acc_intro; intros T' H'. destruct T'. destruct p.
   unfold unif_step_size_order in H'. unfold Quadruple_order in H'.
-  unfold Problem_measure in *|-. simpl in *|-. inverts H3.
+  unfold Problem_measure in *|-. simpl in *|-. inverts EQl.
   destruct H'.    
   apply H with (m := length (Problem_vars (equ_proj p1)))
                  (n2 := equ_Problem_size p1) (n0 := non_fixpoint_equ p1)
-                  (n := fresh_Problem_size p1); try omega; trivial.
+                  (n := fresh_Problem_size p1); try lia; trivial.
   destruct H3. destruct H3.
   inverts H3.
   apply H0 with (m := equ_Problem_size p1) (n0 := non_fixpoint_equ p1)
-                 (n := fresh_Problem_size p1); try omega.
+                 (n := fresh_Problem_size p1); try lia.
   rewrite H6; trivial.   
   
   apply H with (m := length (Problem_vars (equ_proj p1)))
                  (n2 := equ_Problem_size p1) (n0 := non_fixpoint_equ p1)
-                  (n := fresh_Problem_size p1); try omega; trivial.
+                  (n := fresh_Problem_size p1); try lia; trivial.
   destruct H3. destruct H3. destruct H3.
   inverts H3. inverts H5.
-  apply H1 with (m := non_fixpoint_equ p1) (n := fresh_Problem_size p1); try omega.
+  apply H1 with (m := non_fixpoint_equ p1) (n := fresh_Problem_size p1); try lia.
   rewrite H6. rewrite H7; trivial.
   apply H0 with (m := equ_Problem_size p1) (n0 := non_fixpoint_equ p1)
-                 (n := fresh_Problem_size p1); try omega.
+                 (n := fresh_Problem_size p1); try lia.
   rewrite H7; trivial.
   apply H with (m := length (Problem_vars (equ_proj p1)))
                  (n2 := equ_Problem_size p1) (n0 := non_fixpoint_equ p1)
-                  (n := fresh_Problem_size p1); try omega; trivial.
+                  (n := fresh_Problem_size p1); try lia; trivial.
   destruct H3. destruct H3. destruct H3. 
   inverts H3. inverts H6. inverts H5.
-  apply H2 with (m := fresh_Problem_size p1); try omega.
+  apply H2 with (m := fresh_Problem_size p1); try lia.
   rewrite H6. rewrite H7. rewrite H8. trivial.
-  apply H1 with (m := non_fixpoint_equ p1) (n := fresh_Problem_size p1); try omega.
+  apply H1 with (m := non_fixpoint_equ p1) (n := fresh_Problem_size p1); try lia.
   rewrite H7. rewrite H8; trivial. 
   apply H0 with (m := equ_Problem_size p1) (n0 := non_fixpoint_equ p1)
-                 (n := fresh_Problem_size p1); try omega.
+                 (n := fresh_Problem_size p1); try lia.
   rewrite H8; trivial.
   apply H with (m := length (Problem_vars (equ_proj p1)))
                  (n2 := equ_Problem_size p1) (n0 := non_fixpoint_equ p1)
-                  (n := fresh_Problem_size p1); try omega; trivial.
+                  (n := fresh_Problem_size p1); try lia; trivial.
 Qed.
-
-
 
 Lemma unif_step_order_wf : forall varSet,
       well_founded (unif_step_order varSet).
@@ -778,7 +776,7 @@ Proof.
           apply equ_sys_inst; trivial. simpl. intro H4.
           apply set_union_elim in H4. 
           simpl in H4. destruct H4; try contradiction.
-          destruct H4; try symmetry in H4; contradiction.
+          destruct H3; subst; contradiction.
           right~. left~.
        (* X is not in varSet *) 
         right~. exists (S©(|[(X,(!pi)@(pi'|.Y))]|))

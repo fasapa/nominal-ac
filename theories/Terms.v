@@ -415,22 +415,22 @@ Proof.
 Qed.
 
 
-Require Import Omega.
+Require Import Lia.
   
 Lemma subterms_term_size_leq : forall s t, set_In s (subterms t) -> term_size s <= term_size t.
 Proof.
   intros. induction t; simpl in *|-*.
-  destruct H; try contradiction. rewrite <- H; simpl; omega.
-  destruct H; try contradiction. rewrite <- H; simpl; omega.  
-  apply set_add_elim in H. destruct H. rewrite H; simpl; omega.
-  assert (Q: term_size s <= term_size t).  apply IHt. trivial. omega.
-  apply set_add_elim in H. destruct H. rewrite H. simpl; omega.
+  destruct H; try contradiction. rewrite <- H; simpl; lia.
+  destruct H; try contradiction. rewrite <- H; simpl; lia.  
+  apply set_add_elim in H. destruct H. rewrite H; simpl; lia.
+  assert (Q: term_size s <= term_size t).  apply IHt. trivial. lia.
+  apply set_add_elim in H. destruct H. rewrite H. simpl; lia.
   apply set_union_elim in H. destruct H.
-  assert (Q: term_size s <= term_size t1). apply IHt1; trivial. omega. 
-  assert (Q: term_size s <= term_size t2). apply IHt2; trivial. omega.
-  apply set_add_elim in H. destruct H. rewrite H; simpl; omega.
-  assert (Q: term_size s <= term_size t).  apply IHt. trivial. omega.
-  destruct H; try contradiction. rewrite <- H; simpl; omega.
+  assert (Q: term_size s <= term_size t1). apply IHt1; trivial. lia. 
+  assert (Q: term_size s <= term_size t2). apply IHt2; trivial. lia.
+  apply set_add_elim in H. destruct H. rewrite H; simpl; lia.
+  assert (Q: term_size s <= term_size t).  apply IHt. trivial. lia.
+  destruct H; try contradiction. rewrite <- H; simpl; lia.
 Qed.  
 
 Lemma psubterms_term_size_lt : forall s t, set_In s (psubterms t) -> term_size s < term_size t.
@@ -442,25 +442,25 @@ Proof.
   gen H. case (term_eqdec (%a) (%a));
     intros; simpl in H; try contradiction.   
   apply set_remove_add in H.
-  case (term_eqdec s t); intro H0. rewrite H0. omega.
+  case (term_eqdec s t); intro H0. rewrite H0. lia.
   assert (Q : term_size s < term_size t).
    apply IHt. apply set_remove_3; trivial.
-  omega.
+  lia.
   apply set_remove_add in H.
   apply set_union_elim in H. destruct H.
-  case (term_eqdec s t1); intro H0. rewrite H0. omega.
+  case (term_eqdec s t1); intro H0. rewrite H0. lia.
   assert (Q : term_size s < term_size t1).
    apply IHt1. apply set_remove_3; trivial.
-  omega.
-  case (term_eqdec s t2); intro H0. rewrite H0. omega.
+  lia.
+  case (term_eqdec s t2); intro H0. rewrite H0. lia.
   assert (Q : term_size s < term_size t2).
    apply IHt2. apply set_remove_3; trivial.
-  omega.
+  lia.
   apply set_remove_add in H. 
-  case (term_eqdec s t); intro H0. rewrite H0. omega.
+  case (term_eqdec s t); intro H0. rewrite H0. lia.
   assert (Q : term_size s < term_size t).
    apply IHt. apply set_remove_3; trivial.
-  omega.
+  lia.
  gen H. case (term_eqdec (p|.v) (p|.v));
     intros; simpl in H; try contradiction. 
 Qed.
@@ -470,7 +470,7 @@ Proof.
   intros. intro H'.
   apply psubterms_term_size_lt in H.
   apply subterms_term_size_leq in H'.
-  omega.
+  lia.
 Qed.  
 
 Lemma subterms_trans : forall s t u,

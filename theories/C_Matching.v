@@ -84,7 +84,7 @@ Proof.
    apply equ_Problem_size_neq_nil; trivial.
   assert (Q' : equ_Problem_size P > 0).
    apply equ_Problem_size_gt_0 with (s:=pi|.X) (t:=([])|.X); trivial. 
-  simpl in *|-*. omega.
+  simpl in *|-*. lia.
 Qed.
 
 

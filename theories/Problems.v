@@ -198,7 +198,7 @@ Proof.
   destruct p0.
   case (perm_eqdec p ([])); intro H'.
   right~. intro H. destruct H. destruct H. destruct H. inverts H0.
-  symmetry in H1; contradiction.
+  subst; contradiction.
   case (var_eqdec v v0); intro H. rewrite H.
   left~. exists p. exists v0. split~.
   right~. intro H''. destruct H''. destruct H0. destruct H0. inverts H1. 
@@ -631,7 +631,7 @@ Fixpoint non_fixpoint_equ (P : Problem) {struct P} : nat :=
 Lemma equ_Problem_size_term : forall s t,
       equ_Problem_size (|[s~?t]|) = term_size s + term_size t. 
 Proof.
-  intros. simpl. omega.
+  intros. simpl. lia.
 Qed.  
   
 Lemma fresh_Problem_size_remove : forall P a s, set_In (a#?s) P ->
@@ -639,16 +639,16 @@ Lemma fresh_Problem_size_remove : forall P a s, set_In (a#?s) P ->
 Proof.
   intros. induction P. simpl in H. contradiction.
   simpl in H. destruct H. rewrite H. clear H.
-  simpl. case (Constraint_eqdec (a #? s) (a #? s)); intro H. clear H. omega. false. 
+  simpl. case (Constraint_eqdec (a #? s) (a #? s)); intro H. clear H. lia. false. 
   destruct a0. simpl. case (Constraint_eqdec (a #? s) (a0 #? t)); intro H'.
-  inverts H'. omega.
+  inverts H'. lia.
   simpl. rewrite IHP; trivial. clear IHP H'.
   assert (Q : fresh_Problem_size P >= term_size s).
    induction P. simpl in H. contradiction. destruct a1.
-   simpl in *|-*. destruct H. inverts H. omega.
-   apply IHP in H. omega. simpl in H. destruct H.
+   simpl in *|-*. destruct H. inverts H. lia.
+   apply IHP in H. lia. simpl in H. destruct H.
    inverts H. simpl. apply IHP; trivial.
-  omega.
+  lia.
   simpl in *|-*. case (Constraint_eqdec (a #? s) (t ~? t0)); intro H'.
   inverts H'. simpl. rewrite IHP; trivial.
 Qed.
@@ -656,9 +656,9 @@ Qed.
 Lemma fresh_Problem_size_add : forall P a s,
                                fresh_Problem_size (P|+(a#?s)) <= fresh_Problem_size P + term_size s.
 Proof.
-  intros. induction P. simpl. omega.
+  intros. induction P. simpl. lia.
   destruct a0. simpl.
-  case (Constraint_eqdec (a #? s) (a0 #? t)); intro H; simpl; try omega.
+  case (Constraint_eqdec (a #? s) (a0 #? t)); intro H; simpl; try lia.
   simpl. case (Constraint_eqdec (a #? s) (t ~? t0)); intro H.
   inverts H. simpl. trivial.
 Qed.    
@@ -669,7 +669,7 @@ Proof.
   destruct a0. simpl in *|-*. destruct H. 
   assert (Q : term_size t > 0).
    apply term_size_gt_0.
-  omega. apply IHP in H. omega.
+  lia. apply IHP in H. lia.
   simpl in *|-*. destruct H.
   inverts H. apply IHP; trivial.
 Qed.
@@ -677,11 +677,11 @@ Qed.
 Lemma equ_Problem_size_neq_nil : forall u P, set_In u P -> equ_Problem_size P >= equ_Problem_size (|[u]|).
 Proof.
   intros. induction P; intros. simpl in H. contradiction.
-  simpl in H. destruct H. rewrite H. destruct u. simpl. omega.
-  simpl. assert (Q : term_size t > 0). apply term_size_gt_0. omega.
+  simpl in H. destruct H. rewrite H. destruct u. simpl. lia.
+  simpl. assert (Q : term_size t > 0). apply term_size_gt_0. lia.
   apply IHP in H. clear IHP. simpl in *|-*. destruct u; destruct a; trivial.
-  assert (Q : term_size t0 > 0). apply term_size_gt_0. omega.
-  omega.  
+  assert (Q : term_size t0 > 0). apply term_size_gt_0. lia.
+  lia.  
 Qed.
   
 Lemma equ_Problem_size_remove : forall P s t, set_In (s~?t) P ->
@@ -690,14 +690,14 @@ Proof.
   intros. induction P. simpl in H. contradiction.
   simpl in H. destruct H. rewrite H. clear H.
   simpl. case (Constraint_eqdec (s ~? t) (s ~? t)); intro H. clear H.
-  omega. false. 
+  lia. false. 
   simpl. destruct a. case (Constraint_eqdec (s ~? t) (a #? t0)); intro H0.
   inverts H0. simpl. apply IHP; trivial.
   case (Constraint_eqdec (s ~? t) (t0 ~? t1)); intro H0.
-  inverts H0. omega. simpl. rewrite IHP; trivial.
+  inverts H0. lia. simpl. rewrite IHP; trivial.
   assert (Q : equ_Problem_size P >= equ_Problem_size (|[s ~? t]|)).
     apply equ_Problem_size_neq_nil; trivial.
-  simpl in Q. omega.
+  simpl in Q. lia.
 Qed.
 
 Lemma equ_Problem_size_gt_0 : forall s t P, set_In (s~?t) P -> equ_Problem_size P > 0.
@@ -706,18 +706,18 @@ Proof.
   destruct a. simpl in *|-*. destruct H. inverts H.
   apply IHP in H. clear IHP. trivial. 
   simpl in *|-*. assert (Q : term_size t0 > 0). apply term_size_gt_0.
-  omega.  
+  lia.  
 Qed.
 
 Lemma equ_Problem_size_add : forall P u, equ_Problem_size P + (equ_Problem_size (|[u]|)) >= equ_Problem_size (P|+u). 
 Proof.
-  intros. induction P. simpl; omega.
+  intros. induction P. simpl; lia.
   simpl in *|-*. destruct u; destruct a.
 
-  case (Constraint_eqdec (a0 #? t) (a #? t0)); intro H; simpl; try omega.
-  case (Constraint_eqdec (a0 #? t) (t0 ~? t1)); intro H; simpl; try omega. 
-  case (Constraint_eqdec (t ~? t0) (a #? t1)); intro H; simpl; try omega. 
-  case (Constraint_eqdec (t ~? t0) (t1 ~? t2)); intro H; simpl; try omega. 
+  case (Constraint_eqdec (a0 #? t) (a #? t0)); intro H; simpl; try lia.
+  case (Constraint_eqdec (a0 #? t) (t0 ~? t1)); intro H; simpl; try lia. 
+  case (Constraint_eqdec (t ~? t0) (a #? t1)); intro H; simpl; try lia. 
+  case (Constraint_eqdec (t ~? t0) (t1 ~? t2)); intro H; simpl; try lia. 
 Qed.
 
 
@@ -728,7 +728,7 @@ Lemma equ_Problem_size_add' : forall P u,
 Proof.
   intros. rewrite set_add_not_In; trivial.
   induction P; trivial; simpl in *|-*.
-  destruct a; destruct u; rewrite IHP; try omega;
+  destruct a; destruct u; rewrite IHP; try lia;
   intro H0; apply H; right~.  
 Qed.
   
@@ -768,7 +768,7 @@ Proof.
   apply IHP; trivial.
   case (fixpoint_equ_eqdec (t0 ~? t1)); intro H1.
   destruct H. inverts H. contradiction.
-  apply IHP; trivial. omega.
+  apply IHP; trivial. lia.
 Qed.
   
 Lemma non_fixpoint_equ_remove : forall P s t, set_In (s~?t) P -> ~ fixpoint_equ (s~?t) ->
@@ -779,14 +779,14 @@ Proof.
   simpl. destruct H. inverts H. apply IHP; trivial.
   case (Constraint_eqdec (s ~? t) (t0 ~? t1)); intro H1.
   case (fixpoint_equ_eqdec (t0 ~? t1)); intro H2.
-  inverts H1. contradiction. omega.
+  inverts H1. contradiction. lia.
   simpl. case (fixpoint_equ_eqdec (t0 ~? t1)); intro H2.
   destruct H. inverts H. contradiction. apply IHP; trivial.
   destruct H. inverts H. false.
   generalize H. intro H3. apply IHP in H3. 
   assert (Q : non_fixpoint_equ P > 0).
    apply non_fixpoint_equ_gt_0 with (s := s) (t:=t); trivial.
-  omega.
+  lia.
 Qed.
 
 Lemma non_fixpoint_equ_add : forall P pi X, pi <> [] -> non_fixpoint_equ (P|+(pi|.X~?([]|.X))) =
@@ -800,7 +800,7 @@ Proof.
   inverts H0. simpl. rewrite IHP; trivial.
   case (Constraint_eqdec ((pi|.X) ~? (([])|.X)) (t ~? t0)); intro H0; simpl; trivial.
   case (fixpoint_equ_eqdec (t ~? t0)); intro H1; trivial.
-  omega.
+  lia.
 Qed.
 
 
